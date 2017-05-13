@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LUTtoUE4"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="LUT to UE4 color look up image converter" Height="83.156" Width="320.213">
     <Grid>
-        
+        <Button x:Name="button" Content="Convert" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Margin="10" Click="button_Click"/>
     </Grid>
 </Window>

@@ -50,7 +50,7 @@ namespace LUTtoUE4
 		#endregion
 
 		#region Output
-		public static Graphics ToImage(string[] data, int LUTsize, float domainMin, float domainMax)
+		public static Bitmap ToImage(string[] data, int LUTsize, float domainMin, float domainMax)
 		{
 
 
@@ -67,9 +67,15 @@ namespace LUTtoUE4
 			dialog.Title = "Save LUT as *.png";
 			dialog.AddExtension = true;
 
-			if ((dialog.ShowDialog() != true) || (dialog.FileName == null))
+			if (dialog.ShowDialog() != true)
+			{
+				MessageBox.Show("Canceled by user.");
+				return null;
+			}
+			if (dialog.FileName == null)
 			{
 				MessageBox.Show("Error while trying to assing save location.");
+				return null;
 			}
 
 
