@@ -15,7 +15,6 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 Margin="10" Click="button_Click" Grid.Row="0"/>
         <CheckBox x:Name="swizzle" Content="Swap green and blue channels" Margin="10" 
-                  Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                  IsChecked="True"/>
+                  Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

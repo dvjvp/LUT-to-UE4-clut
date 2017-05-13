@@ -25,7 +25,10 @@ namespace LUTtoUE4
 			string savePath = FileOpener.GetImageSaveLocation();
 			if (savePath == null) return;
 
-			using (Bitmap b = ToImage(GetLUTData(fileContent), LUTsize, domainMin, domainMax, (bool)swizzle.IsChecked))
+			Image3D content = new Image3D(GetLUTData(fileContent), LUTsize);
+
+			const int ue4colorLookUpSize = 16;
+			using (Bitmap b = content.ToColorLookUpImage(ue4colorLookUpSize, domainMin, domainMax, (bool)swizzle.IsChecked))
 			{
 				if (b == null)
 				{
@@ -65,25 +68,5 @@ namespace LUTtoUE4
 			
 		}
 
-
-		public static Bitmap ToImage(string[] data, int LUTsize, Vector3 domainMin, Vector3 domainMax, bool swizzle)
-		{
-			Bitmap bitmap = new Bitmap(LUTsize * LUTsize, LUTsize);
-
-			int arrayIndex = 0;
-
-			for (int y = 0; y < LUTsize; y++)
-			{
-				for (int x = 0; x < LUTsize*LUTsize; x++, arrayIndex++)
-				{
-					Vector3 vc = Vector3.FromString(data[arrayIndex]);
-					bitmap.SetPixel(x, y,
-						swizzle ? vc.ToPixelSwizzle(domainMin, domainMax) : vc.ToPixel(domainMin, domainMax));
-					
-				}
-			}
-
-			return bitmap;
-		}
 	}
 }
