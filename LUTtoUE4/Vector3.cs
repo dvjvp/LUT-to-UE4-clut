@@ -36,6 +36,13 @@ namespace LUTtoUE4
 				ToByte(g, domainMin.g, domainMax.g),
 				ToByte(b, domainMin.b, domainMax.b));
 		}
+		public Color ToPixelSwizzle(Vector3 domainMin, Vector3 domainMax)
+		{
+			return Color.FromArgb(
+				ToByte(r, domainMin.r, domainMax.r),
+				ToByte(b, domainMin.b, domainMax.b),
+				ToByte(g, domainMin.g, domainMax.g));
+		}
 
 		private static int ToByte(float f, float in0, float in1)
 		{

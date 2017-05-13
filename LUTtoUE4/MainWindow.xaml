@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LUTtoUE4"
         mc:Ignorable="d"
-        Title="LUT to UE4 color look up image converter" Height="83.156" Width="320.213">
+        Title="LUT to UE4 color look up image converter" Height="143.156" Width="320.213">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Button x:Name="button" Content="Convert" 
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                Margin="10" Click="button_Click"/>
+                Margin="10" Click="button_Click" Grid.Row="0"/>
+        <CheckBox x:Name="swizzle" Content="Swap green and blue channels" Margin="10" 
+                  Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                  IsChecked="True"/>
     </Grid>
 </Window>
