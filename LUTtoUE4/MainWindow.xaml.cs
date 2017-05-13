@@ -19,13 +19,13 @@ namespace LUTtoUE4
 			if (fileContent == null) return;
 
 			int LUTsize;
-			float domainMin, domainMax;
-			GetLUTMetadata(out LUTsize, out domainMin, out domainMax);
+			Vector3 domainMin, domainMax;
+			GetLUTMetadata(fileContent, out LUTsize, out domainMin, out domainMax);
 
 			string savePath = FileOpener.GetImageSaveLocation();
 			if (savePath == null) return;
 
-			using (Bitmap b = FileOpener.ToImage(GetLUTData(fileContent), LUTsize, domainMin, domainMax))
+			using (Bitmap b = ToImage(GetLUTData(fileContent), LUTsize, domainMin, domainMax))
 			{
 				if (b == null)
 				{
@@ -42,12 +42,45 @@ namespace LUTtoUE4
 
 		private string[] GetLUTData(string[] fileContent)
 		{
-			throw new NotImplementedException();
+			int startIndex = fileContent.TakeWhile(s=> !s.StartsWith("#LUT data points")).Count();
+			int arrayLength = fileContent.Length - startIndex - 1;
+
+			string[] subArray = new string[arrayLength];
+			Array.Copy(fileContent, startIndex+1, subArray, 0, arrayLength);
+			return subArray;
 		}
 
-		private void GetLUTMetadata(out int LUTsize, out float domainMin, out float domainMax)
+		private void GetLUTMetadata(string[] fileContent, out int LUTsize, out Vector3 domainMin, out Vector3 domainMax)
 		{
-			throw new NotImplementedException();
+			string temp;
+
+			temp = fileContent.First(s => s.StartsWith("LUT_3D_SIZE"));
+			LUTsize = Convert.ToInt32(temp.Substring("LUT_3D_SIZE ".Length));
+
+			temp = fileContent.First(s => s.StartsWith("DOMAIN_MIN"));
+			domainMin = Vector3.FromString(temp.Substring("DOMAIN_MIN ".Length));
+
+			temp = fileContent.First(s => s.StartsWith("DOMAIN_MAX"));
+			domainMax = Vector3.FromString(temp.Substring("DOMAIN_MAX ".Length));
+			
+		}
+
+
+		public static Bitmap ToImage(string[] data, int LUTsize, Vector3 domainMin, Vector3 domainMax)
+		{
+			Bitmap bitmap = new Bitmap(LUTsize * LUTsize, LUTsize);
+
+			int arrayIndex = 0;
+
+			for (int y = 0; y < LUTsize; y++)
+			{
+				for (int x = 0; x < LUTsize*LUTsize; x++, arrayIndex++)
+				{
+					bitmap.SetPixel(x, y, Vector3.FromString(data[arrayIndex]).ToPixel(domainMin, domainMax));
+				}
+			}
+
+			return bitmap;
 		}
 	}
 }

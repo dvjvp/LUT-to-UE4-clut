@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
-using System.Drawing;
-
 
 namespace LUTtoUE4
 {
@@ -16,7 +14,8 @@ namespace LUTtoUE4
 			dialog.CheckFileExists = true;
 			dialog.CheckPathExists = true;
 			dialog.ValidateNames = true;
-			dialog.DefaultExt = "LUT (*.CUBE)|*.CUBE|All files (*.*)|*.*";
+			dialog.DefaultExt = ".CUBE";
+			dialog.Filter = "LUT (*.CUBE)|*.CUBE|All files (*.*)|*.*";
 			dialog.Multiselect = false;
 			dialog.Title = "Open 3d lookup table";
 
@@ -50,20 +49,12 @@ namespace LUTtoUE4
 		#endregion
 
 		#region Output
-		public static Bitmap ToImage(string[] data, int LUTsize, float domainMin, float domainMax)
-		{
-
-
-			return null;
-		}
 
 		public static string GetImageSaveLocation()
 		{
 			SaveFileDialog dialog = new SaveFileDialog();
-			dialog.CheckFileExists = true;
-			dialog.CheckPathExists = true;
-			dialog.ValidateNames = true;
-			dialog.DefaultExt = "*.png|*.png|All files (*.*)|*.*";
+			dialog.DefaultExt = ".png";
+			dialog.Filter = "*.png|*.png|All files (*.*)|*.*";
 			dialog.Title = "Save LUT as *.png";
 			dialog.AddExtension = true;
 
