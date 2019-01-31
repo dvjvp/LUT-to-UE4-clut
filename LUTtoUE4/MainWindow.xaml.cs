@@ -60,12 +60,29 @@ namespace LUTtoUE4
 			temp = fileContent.First(s => s.StartsWith("LUT_3D_SIZE"));
 			LUTsize = Convert.ToInt32(temp.Substring("LUT_3D_SIZE ".Length));
 
-			temp = fileContent.First(s => s.StartsWith("DOMAIN_MIN"));
-			domainMin = Vector3.FromString(temp.Substring("DOMAIN_MIN ".Length));
+			// In case values are not specified, use default values:
+			//http://wwwimages.adobe.com/www.adobe.com/content/dam/acom/en/products/speedgrade/cc/pdfs/cube-lut-specification-1.0.pdf
 
-			temp = fileContent.First(s => s.StartsWith("DOMAIN_MAX"));
-			domainMax = Vector3.FromString(temp.Substring("DOMAIN_MAX ".Length));
-			
+			try
+			{
+				temp = fileContent.First( s => s.StartsWith( "DOMAIN_MIN" ) );
+				domainMin = Vector3.FromString( temp.Substring( "DOMAIN_MIN ".Length ) );
+			}
+			catch (Exception)
+			{
+				domainMin = new Vector3( 0, 0, 0 );
+			}
+
+			try
+			{
+				temp = fileContent.First( s => s.StartsWith( "DOMAIN_MAX" ) );
+				domainMax = Vector3.FromString( temp.Substring( "DOMAIN_MAX ".Length ) );
+			}
+			catch (Exception)
+			{
+				domainMax = new Vector3( 1, 1, 1 );
+			}
+
 		}
 
 	}
