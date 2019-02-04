@@ -45,11 +45,19 @@ namespace LUTtoUE4
 
 		private string[] GetLUTData(string[] fileContent)
 		{
-			int startIndex = fileContent.TakeWhile(s=> !s.StartsWith("#LUT data points")).Count();
-			int arrayLength = fileContent.Length - startIndex - 1;
+			int startIndex = fileContent.TakeWhile(s=>
+			{
+				if ( s.Length == 0 || s.StartsWith( "#" ) ) return true;
+				int index = s.IndexOf( ' ' );
+				if ( index == -1 ) return true;
+				return !float.TryParse( s.Substring( 0, index + 1 ), 
+					System.Globalization.NumberStyles.Float, 
+					System.Globalization.CultureInfo.InvariantCulture, out _ );
+			}).Count();
+			int arrayLength = fileContent.Length - startIndex;
 
 			string[] subArray = new string[arrayLength];
-			Array.Copy(fileContent, startIndex+1, subArray, 0, arrayLength);
+			Array.Copy(fileContent, startIndex, subArray, 0, arrayLength);
 			return subArray;
 		}
 
