@@ -1,0 +1,36 @@
+﻿<Window x:Class="CUBE2LUT2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CUBE2LUT2"
+        mc:Ignorable="d"
+        Title="LUT to UE4 color look up image converter" Height="450" Width="600" MinHeight="300" MinWidth="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Name="UploadButton" Click="UploadButton_Click" Drop="UploadButton_Drop" AllowDrop="True">
+            <StackPanel VerticalAlignment="Center">
+                <Image Source="images/upload-arrow.png" HorizontalAlignment="Center" Stretch="None"/>
+                <Label HorizontalAlignment="Center">Drag and drop files to convert</Label>
+                <Label HorizontalAlignment="Center">Or click to select files</Label>
+            </StackPanel>
+        </Button>
+
+
+        <StackPanel Grid.Row="1">
+            <StackPanel.Resources>
+                <Thickness x:Key="MarginsStackPanel" Top="5"/>
+            </StackPanel.Resources>
+
+            <ProgressBar Name="conversionProgressBar" Height="20" Margin="{StaticResource MarginsStackPanel}"/>
+            <TextBlock Name="messagesTextBlock" Margin="{StaticResource MarginsStackPanel}" Visibility="Collapsed"/>
+            <CheckBox Name="swapGreenAndBlueChannels" Margin="{StaticResource MarginsStackPanel}">Swap Green and Blue Channels</CheckBox>
+            <CheckBox Name="closeAfterProcessFinishes" Margin="{StaticResource MarginsStackPanel}">Close after process finishes</CheckBox>
+            <CheckBox Name="askForOutputDirectory" Margin="{StaticResource MarginsStackPanel}" IsChecked="True" ToolTip="When unchecked, saves output file in the same place as cube file and with the same name">Ask for output directory</CheckBox>
+        </StackPanel>
+    </Grid>
+</Window>
