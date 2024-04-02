@@ -61,7 +61,7 @@ namespace CUBE2LUT2
 
 			foreach ( string line in text )
 			{
-				if ( string.IsNullOrWhiteSpace( line ) || line.StartsWith( "#" ) )
+				if ( string.IsNullOrWhiteSpace( line ) || line.StartsWith( "#" ) || line.StartsWith( "LUT_1D_INPUT_RANGE" ) || line.StartsWith( "LUT_3D_INPUT_RANGE" ) )
 				{
 					// Empty line or a comment. Ignore
 					continue;
