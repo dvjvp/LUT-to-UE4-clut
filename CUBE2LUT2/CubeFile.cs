@@ -49,6 +49,7 @@ namespace CUBE2LUT2
 		public readonly ColorF domainMin = new ColorF( 0, 0, 0 );
 		public readonly ColorF domainMax = new ColorF( 1, 1, 1 );
 
+		public readonly int dimensions = 3;
 		public readonly int size = 256;
 
 		public CubeFile(string filepath)
@@ -73,9 +74,16 @@ namespace CUBE2LUT2
 						// Not used by this tool
 						continue;
 					}
-					else if ( CheckForParameter( line, "LUT_3D_SIZE", out string sLud3dSize ) )
+					else if ( CheckForParameter( line, "LUT_1D_SIZE", out string sLut1dSize ) )
 					{
-						size = int.Parse( sLud3dSize );
+						dimensions = 1;
+						size = int.Parse( sLut1dSize );
+						continue;
+					}
+					else if ( CheckForParameter( line, "LUT_3D_SIZE", out string sLut3dSize ) )
+					{
+						dimensions = 3;
+						size = int.Parse( sLut3dSize );
 						continue;
 					}
 					else if ( CheckForParameter( line, "DOMAIN_MIN", out string sDomainMin ) )
@@ -94,7 +102,8 @@ namespace CUBE2LUT2
 				if ( !data_block_began )
 				{
 					data_block_began = true;
-					data = new ColorF[size * size * size];
+					int totalSize = (int)Math.Pow((double)size, (double)dimensions);
+					data = new ColorF[totalSize];
 				}
 				data[data_idx] = new ColorF( line );
 				data_idx++;
@@ -117,7 +126,26 @@ namespace CUBE2LUT2
 		/// r, g and b are in [0 --- size-1] range
 		public ColorF GetPixel(int r, int g, int b)
 		{
-			return data[r + ( size * g ) + ( size * size * b )];
+			int offset = r;
+
+			if( dimensions == 1 )
+			{
+				// Read out the 1D LUT data.
+				ColorF color;
+				color.red = data[r].red;
+				color.green = data[g].green;
+				color.blue = data[b].blue;
+
+				return color;
+			}
+			else
+			{
+				// It's a 3D LUT.
+				offset += size * g;
+				offset += size * size * b;
+			}
+
+			return data[offset];
 		}
 
 		/// nr, ng and nb should in normalized space, that is [0.0f --- 1.0f)
