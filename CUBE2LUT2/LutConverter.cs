@@ -14,7 +14,16 @@ namespace CUBE2LUT2
 		public void Convert()
 		{
 			CubeFile cube = new CubeFile( inputCubeFilepath );
-			float dimension_mult = 1.0f / cube.size;
+
+			// Calculate the remapping scale.
+			float scale = cube.size;
+			if( cube.dimensions == 1 )
+            {
+                scale = scale * ( UE4_LUT_DIMENSION_SIZE / scale );
+            }
+
+			// Calculate the inverse.
+			float dimensionMultiplier = 1.0f / scale;
 
 			Bitmap bitmap = new Bitmap( UE4_LUT_DIMENSION_SIZE * UE4_LUT_DIMENSION_SIZE, UE4_LUT_DIMENSION_SIZE );
 
@@ -24,7 +33,7 @@ namespace CUBE2LUT2
 				{
 					for ( int r = 0; r < UE4_LUT_DIMENSION_SIZE; r++ )
 					{
-						ColorF cubePixel = cube.GetColor( r * dimension_mult, g * dimension_mult, b * dimension_mult );
+						ColorF cubePixel = cube.GetColor( r * dimensionMultiplier, g * dimensionMultiplier, b * dimensionMultiplier );
 
 						if ( swapGB )
 						{
